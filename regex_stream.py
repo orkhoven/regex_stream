@@ -116,7 +116,7 @@ if uploaded_file:
             msg['Subject'] = "Résultats TP Regex - Étudiant"
             msg['From'] = "selcuk_orkun@yahoo.com"
             msg['To'] = "selcuk_orkun@yahoo.com"
-            msg['Reply-To'] = student_email.strip()
+            msg['Reply-To'] = email_address
             msg.set_content(f"Réponses de l'étudiant ({email_address.strip()}):\n\n{csv_content}")
 
             smtp_server = "smtp.mail.yahoo.com"
