@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import re
-import smtplib
-from email.message import EmailMessage
 import io
 
 st.title("TP Webscraping & RegEx - Analyse manuelle des citations")
@@ -16,7 +14,7 @@ st.markdown("""
 
 **Étape 2 :** Répondez manuellement aux questions Regex suivantes, en vous basant sur le texte de la colonne `quote`.
 
-**Étape 3 :** Téléchargez vos réponses au format CSV ou envoyez-les par email à l’enseignant.
+**Étape 3 :** Téléchargez vos réponses au format CSV.
 """)
 
 uploaded_file = st.file_uploader("Téléversez ici votre fichier CSV", type=["csv"])
@@ -73,62 +71,3 @@ if uploaded_file:
         result_df = pd.DataFrame(data)
         csv = result_df.to_csv(index=False).encode('utf-8')
         st.download_button("Télécharger le fichier CSV", csv, "reponses_regex.csv", "text/csv")
-
-    st.markdown("---")
-    st.markdown("### Envoyer vos réponses par email")
-
-    email_address = st.text_input("Votre adresse email :", "")
-    teacher_email = "selcuk_orkun@yahoo.com"  # DESTINATAIRE
-
-    if st.button("Envoyer par email"):
-        try:
-            data = {
-                "Tâche Regex": [
-                    "Nombre de mots",
-                    "Nombre de signes de ponctuation",
-                    "Nombre d’années",
-                    "Nombre d’adresses e-mail",
-                    "Nombre de noms propres (Prénom Nom)",
-                    "Nombre de mots de plus de 6 lettres",
-                    "Nombre d’occurrences du mot « life »",
-                    "Nombre de guillemets dans des guillemets",
-                    "Nombre de mots en minuscules uniquement",
-                    "Nombres en toutes lettres (un à dix)",
-                    "Nombre de mots finissant par -ing",
-                    "Nombre de mots exprimant des émotions",
-                    "Nombre de négations",
-                    "Nombre de mots répétés consécutivement",
-                    "Longueur moyenne des mots"
-                ],
-                "Réponse": [
-                    num_words, punctuation_count, num_years, num_emails, num_proper_names, num_long_words,
-                    life_count, num_inner_quotes, num_lowercase_words, num_number_words, num_ing_verbs,
-                    num_emotions, num_negations, num_repeated_words, avg_word_length
-                ]
-            }
-
-            result_df = pd.DataFrame(data)
-            csv_buffer = io.StringIO()
-            result_df.to_csv(csv_buffer, index=False)
-            csv_content = csv_buffer.getvalue()
-
-            msg = EmailMessage()
-            msg['Subject'] = "Résultats TP Regex - Étudiant"
-            msg['From'] = "selcuk_orkun@yahoo.com"
-            msg['To'] = "selcuk_orkun@yahoo.com"
-            msg['Reply-To'] = email_address
-            msg.set_content(f"Réponses de l'étudiant ({email_address.strip()}):\n\n{csv_content}")
-
-            smtp_server = "smtp.mail.yahoo.com"
-            smtp_port = 587
-            smtp_user = "selcuk_orkun@yahoo.com"
-            smtp_password = "gervfabqarlxhgpg"  # Yahoo App password
-
-            with smtplib.SMTP(smtp_server, smtp_port) as server:
-                server.starttls()
-                server.login(smtp_user, smtp_password)
-                server.send_message(msg)
-
-            st.success("Email envoyé avec succès !")
-        except Exception as e:
-            st.error(f"Erreur lors de l'envoi de l'email : {e}")
