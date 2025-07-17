@@ -106,23 +106,23 @@ if uploaded_file:
                     num_emotions, num_negations, num_repeated_words, avg_word_length
                 ]
             }
+
             result_df = pd.DataFrame(data)
             csv_buffer = io.StringIO()
             result_df.to_csv(csv_buffer, index=False)
             csv_content = csv_buffer.getvalue()
-               
+
             msg = EmailMessage()
             msg['Subject'] = "Résultats TP Regex - Étudiant"
-            msg['From'] = "selcuk_orkun@yahoo.com"   # Your authenticated Yahoo email (must stay here)
-            msg['To'] = teacher_email                 # Your teacher email where you receive the mail
-            msg['Reply-To'] = email_address           # The student’s email input
-
-            msg.set_content(f"Voici les réponses de l'étudiant ({email_address}) :\n\n{csv_content}")
+            msg['From'] = "selcuk_orkun@yahoo.com"
+            msg['To'] = "selcuk_orkun@yahoo.com"
+            msg['Reply-To'] = email_address.strip()
+            msg.set_content(f"Réponses de l'étudiant ({email_address.strip()}):\n\n{csv_content}")
 
             smtp_server = "smtp.mail.yahoo.com"
             smtp_port = 587
             smtp_user = "selcuk_orkun@yahoo.com"
-            smtp_password = "gervfabqarlxhgpg"  # App password
+            smtp_password = "gervfabqarlxhgpg"  # Yahoo App password
 
             with smtplib.SMTP(smtp_server, smtp_port) as server:
                 server.starttls()
