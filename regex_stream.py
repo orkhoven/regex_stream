@@ -113,15 +113,15 @@ if uploaded_file:
 
             msg = EmailMessage()
             msg['Subject'] = "Résultats TP Regex - Étudiant"
-            msg['From'] = email_address
+            msg['From'] = teacher_email
             msg['To'] = teacher_email
+            msg['Reply-To'] = email_address
             msg.set_content(f"Voici les réponses de l'étudiant ({email_address}) :\n\n{csv_content}")
 
-            # Configuration SMTP Gmail
             smtp_server = "smtp.mail.yahoo.com"
             smtp_port = 587
-            smtp_user = "selcuk_orkun@yahoo.com"  # Votre compte Gmail expéditeur
-            smtp_password = "gervfabqarlxhgpg"   # App Password
+            smtp_user = "selcuk_orkun@yahoo.com"
+            smtp_password = "gervfabqarlxhgpg"  # App password
 
             with smtplib.SMTP(smtp_server, smtp_port) as server:
                 server.starttls()
