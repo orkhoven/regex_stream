@@ -110,12 +110,13 @@ if uploaded_file:
             csv_buffer = io.StringIO()
             result_df.to_csv(csv_buffer, index=False)
             csv_content = csv_buffer.getvalue()
-
+               
             msg = EmailMessage()
             msg['Subject'] = "Résultats TP Regex - Étudiant"
-            msg['From'] = teacher_email
-            msg['To'] = teacher_email
-            msg['Reply-To'] = email_address
+            msg['From'] = "selcuk_orkun@yahoo.com"   # Your authenticated Yahoo email (must stay here)
+            msg['To'] = teacher_email                 # Your teacher email where you receive the mail
+            msg['Reply-To'] = email_address           # The student’s email input
+
             msg.set_content(f"Voici les réponses de l'étudiant ({email_address}) :\n\n{csv_content}")
 
             smtp_server = "smtp.mail.yahoo.com"
